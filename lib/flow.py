@@ -1,5 +1,7 @@
 import os.path
 import yaml
+import os
+import subprocess
 
 
 def get_defs(filepath):
@@ -46,11 +48,11 @@ def _format_cmd_def(cmd_def, filepath):
         cmd_def['cmd'] = cmd_def['cmd'].replace(keyword, value)
     cmd_def['cmd'] = cmd_def['cmd'].strip()
 
-    if 'tmux_session' in cmd_def:
-        cmd_def['tmux_pane'] = cmd_def.get('tmux_pane', 0)
-        cmd_def['runner'] = 'tmux'
-    else:
-        cmd_def['runner'] = 'vim'
+    cmd_def['runner'] = 'vim'
+    if 'TMUX' in os.environ:
+        panes = subprocess.check_output(['tmux', 'list-panes']).strip().split('\n')
+        if panes > 1:
+            cmd_def['runner'] = 'tmux'
 
     return cmd_def
 
