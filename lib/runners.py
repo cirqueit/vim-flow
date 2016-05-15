@@ -61,7 +61,7 @@ def tmux_runner(cmd_def):
         args = ['tmux', 
                 'send', 
                 '-t', 
-                '%s.%s' % (cmd_def['tmux_session'], cmd_def['tmux_pane']), 
+                'right', 
                 'sh -c \'%s\'' % script, 
                 'ENTER']
 
